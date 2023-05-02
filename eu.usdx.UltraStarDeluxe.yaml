@@ -169,6 +169,7 @@ modules:
   - type: patch
     paths:
     - patches/install-data.patch
+    - patches/instructions.patch
     - patches/ldflags.patch
   - type: shell
     commands:
