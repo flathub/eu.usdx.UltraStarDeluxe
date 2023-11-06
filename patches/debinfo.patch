@@ -1,0 +1,19 @@
+Free Pascal supports -gs for stabs debug info, -gw for dwarf debug info,
+and -g for the default debug info format. Optionally the dwarf version can
+be appended to -gw. GCC has far more switches to enable debugging and
+supports different levels of debug info verbosity. To keep it simple,
+let's map just -g to the Free Pascal flags.
+
+diff --git a/src/Makefile.in b/src/Makefile.in
+index f5b2b144..15f6baec 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -99,7 +99,7 @@ PFLAGS_EXTRA   += @PFLAGS_EXTRA@
+ # - Do we need -Coi?
+ PFLAGS_BASE_DEFAULT    := -Si -Sg- -Sc- -v0Binwe
+ PFLAGS_DEBUG_DEFAULT   := -Xs- -g -gl -dDEBUG_MODE
+-PFLAGS_RELEASE_DEFAULT := -Xs- -O2
++PFLAGS_RELEASE_DEFAULT := -Xs- -O2 $(filter -g,$(CFLAGS))
+ PFLAGS_EXTRA_DEFAULT   :=
+ 
+ # Debug/Release mode flags
