@@ -163,8 +163,8 @@ modules:
   sources:
   - type: git
     url: https://github.com/UltraStar-Deluxe/USDX.git
-    tag: v2023.11.0
-    commit: d17dfda9c6f97d3dd93961474cb3aace64221df4
+    tag: v2023.12.0
+    commit: 94b17f2af73c75f45cb487633744eda0048ee264
     disable-submodules: true
   - type: patch
     paths:
