@@ -172,6 +172,7 @@ modules:
     - patches/instructions.patch
     - patches/ldflags.patch
     - patches/debinfo.patch
+    - patches/appstream.patch
   - type: shell
     commands:
 # Workaround for flathub/org.freedesktop.Sdk.Extension.freepascal#10
