@@ -1,19 +1,60 @@
 Free Pascal supports -gs for stabs debug info, -gw for dwarf debug info,
 and -g for the default debug info format. Optionally the dwarf version can
 be appended to -gw. GCC has far more switches to enable debugging and
-supports different levels of debug info verbosity. To keep it simple,
-let's map just -g to the Free Pascal flags.
+supports different levels of debug info verbosity.
 
 diff --git a/src/Makefile.in b/src/Makefile.in
-index f5b2b144..15f6baec 100644
+index ccbe54ac..59a5a463 100644
 --- a/src/Makefile.in
 +++ b/src/Makefile.in
-@@ -99,7 +99,7 @@ PFLAGS_EXTRA   += @PFLAGS_EXTRA@
+@@ -79,6 +79,15 @@ PINC_FLAGS := -Fi$(USDX_LIB_DIR)/JEDI-SDL/SDL/Pas
+ # Defined on debug mode
+ ENABLE_DEBUG := @ENABLE_DEBUG@
+ 
++gcc2fpc = $(if $(filter $(1),-g -g1 -g2 -g3 -ggdb -ggdb1 -ggdb2 -ggdb3),-g) \
++          $(if $(filter $(1),-gstabs -gstabs1 -gstabs2 -gstabs3),-gs) \
++          $(if $(filter $(1),-gdwarf),-gw) \
++          $(if $(filter $(1),-gdwarf-2),-gw2) \
++          $(if $(filter $(1),-gdwarf-3),-gw3) \
++          $(if $(filter $(1),-gdwarf-4 -gdwarf-5),-gw4)
++
++PFLAGS_FROM_CFLAGS := $(foreach flag,$(CFLAGS),$(call gcc2fpc,$(flag)))
++
+ # Note: 
+ #   - PFLAGS/PFLAGS_* defaults to $(PFLAGS_XYZ_DEFAULT) if not set by the user
+ #   - if PFLAGS is defined, PFLAGS_* will be ignored on "make all"
+@@ -99,15 +108,15 @@ PFLAGS_EXTRA   += @PFLAGS_EXTRA@
+ # - The stack check (-Ct) might not work with enabled threading
  # - Do we need -Coi?
  PFLAGS_BASE_DEFAULT    := -Si -Sg- -Sc- -v0Binwe
- PFLAGS_DEBUG_DEFAULT   := -Xs- -g -gl -dDEBUG_MODE
--PFLAGS_RELEASE_DEFAULT := -Xs- -O2
-+PFLAGS_RELEASE_DEFAULT := -Xs- -O2 $(filter -g,$(CFLAGS))
+-PFLAGS_DEBUG_DEFAULT   := -Xs- -g -gl -dDEBUG_MODE
++PFLAGS_DEBUG_DEFAULT   := -Xs- -g -dDEBUG_MODE
+ PFLAGS_RELEASE_DEFAULT := -Xs- -O2
  PFLAGS_EXTRA_DEFAULT   :=
  
  # Debug/Release mode flags
+ # Note that flags will overwrite previously specified flags,
+ # e.g. "-vinwe -vi-" is the same as "-vnwe"
+-PFLAGS_DEBUG_ALL   := $(PFLAGS_BASE) $(PFLAGS_DEBUG) $(PFLAGS_EXTRA)
+-PFLAGS_RELEASE_ALL := $(PFLAGS_BASE) $(PFLAGS_RELEASE) $(PFLAGS_EXTRA)
++PFLAGS_DEBUG_ALL   := $(PFLAGS_BASE) $(PFLAGS_DEBUG) $(PFLAGS_FROM_CFLAGS) $(PFLAGS_EXTRA)
++PFLAGS_RELEASE_ALL := $(PFLAGS_BASE) $(PFLAGS_RELEASE) $(PFLAGS_FROM_CFLAGS) $(PFLAGS_EXTRA)
+ 
+ # Choose default PFLAGS, depending on debug mode.
+ # Only used if PFLAGS was not set by the user.
+@@ -117,6 +126,15 @@ else
+ PFLAGS_DEFAULT := $(PFLAGS_RELEASE_ALL)
+ endif
+ 
++# If we are adding debug data, we want the rtl unit to show line numbers
++ifneq (,$(filter -g%,$(PFLAGS_DEFAULT)))
++PFLAGS_DEFAULT += -gl -OoNOSTACKFRAME
++endif
++
++ifneq (,$(filter -gw4,$(PFLAGS)))
++$(warning As of Free Pascal 3.2.2 BacktraceStrFunc does not support DWARF > v3)
++endif
++
+ ###
+ # linker and library settings
+ ###

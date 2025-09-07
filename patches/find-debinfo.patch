@@ -1,0 +1,22 @@
+The BacktraceStrFunc function from the Free Pascal runtime supports
+loading separate debug info, but only tries the current directory and
+the directory of the executable/library. Since USDX doesn't try to
+change the current directory at runtime, change to the directory with
+the debug data prepared by the flatpak manifest.
+
+diff --git a/src/base/UPlatformLinux.pas b/src/base/UPlatformLinux.pas
+index 90f3e23e..7a51ee9c 100644
+--- a/src/base/UPlatformLinux.pas
++++ b/src/base/UPlatformLinux.pas
+@@ -92,6 +92,11 @@ procedure TPlatformLinux.DetectLocalExecution();
+   LocalDir := GetExecutionDir();
+   LanguageDir := LocalDir.Append('languages');
+   UseLocalDirs := LanguageDir.IsDirectory and not LocalDir.IsReadonly;
++  if not UseLocalDirs then
++    try
++      chdir('/app/lib/debug/for-freepascal');
++    except
++    end;
+ end;
+ 
+ function TPlatformLinux.GetLogPath: IPath;
