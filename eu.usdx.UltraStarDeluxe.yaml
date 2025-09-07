@@ -48,6 +48,9 @@ build-options:
   append-path: /usr/lib/sdk/freepascal/bin
   env:
    - FPCDIR=/usr/lib/sdk/freepascal/fpcsrc
+  no-debuginfo-compression: true
+  cflags: -gdwarf-3
+  cxxflags: -gdwarf-3
 
 modules:
 - name: opencv
