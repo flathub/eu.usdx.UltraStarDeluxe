@@ -175,9 +175,32 @@ modules:
     - patches/instructions.patch
     - patches/ldflags.patch
     - patches/debinfo.patch
+    - patches/find-debinfo.patch
   - type: shell
     commands:
 # Workaround for flathub/org.freedesktop.Sdk.Extension.freepascal#10
     - cp /usr/lib/sdk/freepascal/etc/fpc.cfg fpc.cfg
     - ln -s ../fpc.cfg src/
     - "set -- `gcc -print-file-name=crtbegin.o` ; echo -Fl${1%/*} >> fpc.cfg"
+
+- name: link-debug-data
+  buildsystem: simple
+  build-commands:
+  - mkdir -p ${FLATPAK_DEST}/lib/debug/for-freepascal
+  - ln -s ${FLATPAK_DEST}/bin/ultrastardx ${FLATPAK_DEST}/lib/debug/for-freepascal/
+  - |
+    (
+        echo ${FLATPAK_DEST}/bin/ultrastardx
+        ldd ${FLATPAK_DEST}/bin/ultrastardx | sed -n 's/.* => //;s/ ([^)]*)$//;s:^[[:space:]]*/:/:p'
+    ) | while read a ; do
+        objcopy --dump-section .gnu_debuglink=/tmp/debuglink "$a" /dev/null
+        if [ -e /tmp/debuglink ] ; then
+            l=`hexdump -e '1/2000 "%s"' /tmp/debuglink`
+            rm -f /tmp/debuglink
+            a=${a%/*}
+            case "$a" in
+            ${FLATPAK_DEST}/*)
+                ln -s ..${a#${FLATPAK_DEST}}/$l ${FLATPAK_DEST}/lib/debug/for-freepascal/
+            esac
+        fi
+    done
