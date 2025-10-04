@@ -1,12 +1,12 @@
 diff --git a/dists/ultrastardx.appdata.xml b/dists/ultrastardx.appdata.xml
-index b685b321..7cb037e0 100644
+index 3e65c8cc..d2504b24 100644
 --- a/dists/ultrastardx.appdata.xml
 +++ b/dists/ultrastardx.appdata.xml
 @@ -6,6 +6,7 @@
-   <summary>Karaoke program that evaluates your performance</summary>
+   <summary>Karaoke for your PC</summary>
    <description>
      <p>UltraStar Deluxe is a free open source karaoke game for your PC. It records the voice of the players and gives points if they hit the notes. Unlike the commercial alternatives, UltraStar Deluxe allows users to add their own songs.</p>
 +    <p>For the Flatpak release the songs need to be placed into ~/.var/app/eu.usdx.UltraStarDeluxe/.ultrastardx/songs/.</p>
    </description>
    <project_license>GPL-2.0</project_license>
-   <url type="homepage">https://usdx.eu/</url>
+   <developer id="eu.usdx">

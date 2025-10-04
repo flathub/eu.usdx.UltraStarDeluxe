@@ -4,7 +4,7 @@ be appended to -gw. GCC has far more switches to enable debugging and
 supports different levels of debug info verbosity.
 
 diff --git a/src/Makefile.in b/src/Makefile.in
-index ccbe54ac..59a5a463 100644
+index 1580680e..59a5a463 100644
 --- a/src/Makefile.in
 +++ b/src/Makefile.in
 @@ -79,6 +79,15 @@ PINC_FLAGS := -Fi$(USDX_LIB_DIR)/JEDI-SDL/SDL/Pas
@@ -23,13 +23,15 @@ index ccbe54ac..59a5a463 100644
  # Note: 
  #   - PFLAGS/PFLAGS_* defaults to $(PFLAGS_XYZ_DEFAULT) if not set by the user
  #   - if PFLAGS is defined, PFLAGS_* will be ignored on "make all"
-@@ -99,15 +108,15 @@ PFLAGS_EXTRA   += @PFLAGS_EXTRA@
+@@ -98,16 +107,16 @@ PFLAGS_EXTRA   += @PFLAGS_EXTRA@
+ # - Note that fpc.cfg already defines -vinw, so add -v0 first
  # - The stack check (-Ct) might not work with enabled threading
  # - Do we need -Coi?
- PFLAGS_BASE_DEFAULT    := -Si -Sg- -Sc- -v0Binwe
--PFLAGS_DEBUG_DEFAULT   := -Xs- -g -gl -dDEBUG_MODE
-+PFLAGS_DEBUG_DEFAULT   := -Xs- -g -dDEBUG_MODE
- PFLAGS_RELEASE_DEFAULT := -Xs- -O2
+-PFLAGS_BASE_DEFAULT    := -Si -Sg- -Sc- -v0Binwe -gl
++PFLAGS_BASE_DEFAULT    := -Si -Sg- -Sc- -v0Binwe
+ PFLAGS_DEBUG_DEFAULT   := -Xs- -g -dDEBUG_MODE
+-PFLAGS_RELEASE_DEFAULT := -Xs- -O2 -OoNOSTACKFRAME
++PFLAGS_RELEASE_DEFAULT := -Xs- -O2
  PFLAGS_EXTRA_DEFAULT   :=
  
  # Debug/Release mode flags
