@@ -5,18 +5,15 @@ change the current directory at runtime, change to the directory with
 the debug data prepared by the flatpak manifest.
 
 diff --git a/src/base/UPlatformLinux.pas b/src/base/UPlatformLinux.pas
-index 90f3e23e..7a51ee9c 100644
+index cb401cc..ebcdbdf 100644
 --- a/src/base/UPlatformLinux.pas
 +++ b/src/base/UPlatformLinux.pas
-@@ -92,6 +92,11 @@ procedure TPlatformLinux.DetectLocalExecution();
-   LocalDir := GetExecutionDir();
-   LanguageDir := LocalDir.Append('languages');
-   UseLocalDirs := LanguageDir.IsDirectory and not LocalDir.IsReadonly;
-+  if not UseLocalDirs then
-+    try
+@@ -96,7 +96,7 @@ procedure TPlatformLinux.DetectLocalExecution();
+   if not UseLocalDirs then begin
+     try
+       // try to cd to the ExecutionDir -- this makes the stacktraces work when started from PATH
+-      chdir(LocalDir.ToNative());
 +      chdir('/app/lib/debug/for-freepascal');
-+    except
-+    end;
- end;
- 
- function TPlatformLinux.GetLogPath: IPath;
+     except
+       // this log statement is too early to be logged to the Error.log file, it'll only show up in stdout
+       // Log.LogWarn('Cannot chdir to '+LocalDir.ToNative()+', stacktraces might be broken', 'TPlatformLinux.DetectLocalExecution');
