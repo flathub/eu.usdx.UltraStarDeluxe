@@ -90,6 +90,7 @@ modules:
   - -DWITH_IMGCODEC_SUNRASTER=OFF
   - -DWITH_IMGCODEC_PXM=OFF
   - -DWITH_IMGCODEC_PFM=OFF
+  - -DCMAKE_POLICY_VERSION_MINIMUM=3.5 
   cleanup:
   - /share/opencv4/*cascades
   - /share/opencv4/valgrind*.supp
