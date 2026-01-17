@@ -14,12 +14,12 @@ during flatpak builds.
 ---
  Makefile.am                       |  4 ++--
  autogen.sh                        |  5 +++++
- configure.ac                      |  1 +
+ configure.ac                      | 12 +++++++++++-
  src/Makefile.am                   |  4 ++++
  src/libprojectM/Common.hpp        |  2 +-
  src/libprojectM/Makefile.am       |  8 +++-----
  src/libprojectM/libprojectM.pc.in | 13 +++++++++++++
- 7 files changed, 29 insertions(+), 8 deletions(-)
+ 7 files changed, 39 insertions(+), 9 deletions(-)
  create mode 100755 autogen.sh
  create mode 100644 src/libprojectM/libprojectM.pc.in
 
@@ -50,10 +50,28 @@ index 0000000..63a7d80
 +
 +echo "Now run ./configure && make"
 diff --git a/configure.ac b/configure.ac
-index 31c9e37..ec77848 100644
+index 31c9e37..5dada88 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -19,6 +19,7 @@ AC_CONFIG_FILES([
+@@ -7,7 +7,16 @@ LT_INIT
+ AC_PROG_CXX
+ 
+ AC_CONFIG_MACRO_DIRS([m4 m4/autoconf-archive])
+-AX_CHECK_GL
++
++# OpenGL detection using pkg-config (modern and reliable method)
++PKG_CHECK_MODULES([GL], [gl glu], [], [
++    # Fallback: try to find GL manually if pkg-config fails
++    AC_CHECK_LIB([GL], [glBegin], [GL_LIBS="-lGL -lGLU"], [
++        AC_MSG_ERROR([OpenGL library not found])
++    ])
++])
++AC_SUBST([GL_CFLAGS])
++AC_SUBST([GL_LIBS])
+ 
+ AC_CHECK_LIB(c, dlopen, LIBDL="", AC_CHECK_LIB(dl, dlopen, LIBDL="-ldl"))
+ 
+@@ -19,6 +28,7 @@ AC_CONFIG_FILES([
    src/libprojectM/Renderer/Makefile
    src/libprojectM/NativePresetFactory/Makefile
    src/libprojectM/MilkdropPresetFactory/Makefile
@@ -129,5 +147,5 @@ index 0000000..84f6694
 +Libs: -L${libdir} -lprojectM
 +Cflags: -I${includedir}
 -- 
-2.23.0
+2.52.0
 

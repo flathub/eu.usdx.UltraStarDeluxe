@@ -1,0 +1,48 @@
+From ee5a8eca9ced99e0d300eec1f6ce7e7a8d966e95 Mon Sep 17 00:00:00 2001
+From: Sabri Ünal <yakushabb@gmail.com>
+Date: Sun, 18 Jan 2026 01:50:32 +0300
+Subject: [PATCH] Fix portmidi PT_Time(Null)
+
+---
+ pm_linux/pmlinuxalsa.c | 2 +-
+ pm_test/latency.c      | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/pm_linux/pmlinuxalsa.c b/pm_linux/pmlinuxalsa.c
+index 1788a2d..557637e 100755
+--- a/pm_linux/pmlinuxalsa.c
++++ b/pm_linux/pmlinuxalsa.c
+@@ -202,7 +202,7 @@ static PmError alsa_write_byte(PmInternal *midi, unsigned char byte,
+             /* compute relative time of event = timestamp - now + latency */
+             PmTimestamp now = (midi->time_proc ? 
+                                midi->time_proc(midi->time_info) : 
+-                               Pt_Time(NULL));
++                               Pt_Time());
+             int when = timestamp;
+             /* if timestamp is zero, send immediately */
+             /* otherwise compute time delay and use delay if positive */
+diff --git a/pm_test/latency.c b/pm_test/latency.c
+index 87f6a5e..643dcb0 100644
+--- a/pm_test/latency.c
++++ b/pm_test/latency.c
+@@ -116,7 +116,7 @@ void pt_callback(PtTimestamp timestamp, void *userData)
+     /* send a note on/off if user requested it */
+     if (test_out && (iteration % output_period == 0)) {
+         PmEvent buffer[1];
+-        buffer[0].timestamp = Pt_Time(NULL);
++        buffer[0].timestamp = Pt_Time();
+         if (note_on) {
+             /* note off */
+             buffer[0].message = Pm_Message(0x90, 60, 0);
+@@ -241,7 +241,7 @@ int main()
+     /* courteously turn off the last note, if necessary */
+     if (note_on) {
+        PmEvent buffer[1];
+-       buffer[0].timestamp = Pt_Time(NULL);
++       buffer[0].timestamp = Pt_Time();
+        buffer[0].message = Pm_Message(0x90, 60, 0);
+        Pm_Write(out, buffer, 1);
+     }
+--
+libgit2 1.7.2
+
