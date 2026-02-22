@@ -1,0 +1,12 @@
+diff --git a/src/media/UVideo.pas b/src/media/UVideo.pas
+index b6de379c..868bf4a3 100644
+--- a/src/media/UVideo.pas
++++ b/src/media/UVideo.pas
+@@ -1035,6 +1035,7 @@ procedure TVideo_FFmpeg.GetFrame(Time: Extended);
+ 
+   {$IF LIBSWSCALE_VERSION < 8003000}
+   {$IF DEFINED(CPUX86_64) or DEFINED(CPUX86)}
++  {$WARNING adding EMMS instruction to work around libswscale bug}
+   // Unscaled conversion with libswscale lacked the emms instruction.
+   // With FFmpeg 7.1 these mmx(ext) implementations have been removed.
+   // I assume you won't run this game on an x86 system that does not yet support mmx.
