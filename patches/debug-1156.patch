@@ -1,0 +1,87 @@
+diff --git a/src/base/UFont.pas b/src/base/UFont.pas
+index 56e4bdb3..38df78fb 100644
+--- a/src/base/UFont.pas
++++ b/src/base/UFont.pas
+@@ -832,7 +832,7 @@   TFreeType = class
+ 
+ implementation
+ 
+-uses Types;
++uses Types, ULog;
+ 
+ const
+   //** shear factor used for the italic effect (bigger value -> more bending)
+@@ -1234,7 +1234,6 @@ function TScalableFont.GetMipmapLevel(): integer;
+                  +ModelMatrix[3,1]*ProjMatrix[1,3]
+                  +ModelMatrix[3,2]*ProjMatrix[2,3]
+                  +ModelMatrix[3,3]*ProjMatrix[3,3]);
+-
+   Dist  := ViewPortArray[2]*(ModelMatrix[0,0]*ProjMatrix[0,0]
+                             +ModelMatrix[0,1]*ProjMatrix[1,0]
+                             +ModelMatrix[0,2]*ProjMatrix[2,0]
+@@ -1274,7 +1273,22 @@ function TScalableFont.GetMipmapLevel(): integer;
+   // The result is our mipmap-level = the index of the mipmap to use.
+ 
+   // Level > 0: Minification; < 0: Magnification
+-  Result := Trunc(Log2(Max(WidthScale, HeightScale)) + cBias);
++  try
++    Result := Trunc(Log2(Max(WidthScale, HeightScale)) + cBias);
++  except
++    Log.LogError(FloatToStr(WidthScale), 'WidthScale');
++    Log.LogError(FloatToStr(HeightScale), 'HeightScale');
++    Log.LogError(FloatToStr(ModelMatrix[0,0]) + ' ' + FloatToStr(ModelMatrix[0,1]) + ' ' + FloatToStr(ModelMatrix[0,2]) + ' ' + FloatToStr(ModelMatrix[0,3]), 'ModelMatrix[0,j]');
++    Log.LogError(FloatToStr(ModelMatrix[1,0]) + ' ' + FloatToStr(ModelMatrix[1,1]) + ' ' + FloatToStr(ModelMatrix[1,2]) + ' ' + FloatToStr(ModelMatrix[1,3]), 'ModelMatrix[1,j]');
++    Log.LogError(FloatToStr(ModelMatrix[2,0]) + ' ' + FloatToStr(ModelMatrix[2,1]) + ' ' + FloatToStr(ModelMatrix[2,2]) + ' ' + FloatToStr(ModelMatrix[2,3]), 'ModelMatrix[2,j]');
++    Log.LogError(FloatToStr(ModelMatrix[3,0]) + ' ' + FloatToStr(ModelMatrix[3,1]) + ' ' + FloatToStr(ModelMatrix[3,2]) + ' ' + FloatToStr(ModelMatrix[3,3]), 'ModelMatrix[3,j]');
++    Log.LogError(FloatToStr(ProjMatrix[0,0]) + ' ' + FloatToStr(ProjMatrix[0,1]) + ' ' + FloatToStr(ProjMatrix[0,2]) + ' ' + FloatToStr(ProjMatrix[0,3]), 'ProjMatrix[0,j]');
++    Log.LogError(FloatToStr(ProjMatrix[1,0]) + ' ' + FloatToStr(ProjMatrix[1,1]) + ' ' + FloatToStr(ProjMatrix[1,2]) + ' ' + FloatToStr(ProjMatrix[1,3]), 'ProjMatrix[1,j]');
++    Log.LogError(FloatToStr(ProjMatrix[2,0]) + ' ' + FloatToStr(ProjMatrix[2,1]) + ' ' + FloatToStr(ProjMatrix[2,2]) + ' ' + FloatToStr(ProjMatrix[2,3]), 'ProjMatrix[2,j]');
++    Log.LogError(FloatToStr(ProjMatrix[3,0]) + ' ' + FloatToStr(ProjMatrix[3,1]) + ' ' + FloatToStr(ProjMatrix[3,2]) + ' ' + FloatToStr(ProjMatrix[3,3]), 'ProjMatrix[3,j]');
++    Log.LogError(IntToStr(ViewPortArray[0]) + ' ' + IntToStr(ViewPortArray[1]) + ' ' + IntToStr(ViewPortArray[2]) + ' ' + IntToStr(ViewPortArray[3]), 'ViewPortArray');
++    raise;
++  end;
+ 
+   // clamp to valid range
+   if (Result < 0) then
+diff --git a/src/media/UVideo.pas b/src/media/UVideo.pas
+index e267846a..43142085 100644
+--- a/src/media/UVideo.pas
++++ b/src/media/UVideo.pas
+@@ -1245,6 +1245,8 @@ procedure TVideo_FFmpeg.Draw();
+   TexRect:      TRectCoords;
+   HeightFactor: double;
+   WidthFactor:  double;
++  ScissorX: GLint;
++  ScissorY: GLint;
+ 
+ begin
+   // exit if there's nothing to draw
+@@ -1261,9 +1263,26 @@ procedure TVideo_FFmpeg.Draw();
+   WidthFactor := (ScreenW/Screens) / RenderW;
+   HeightFactor := ScreenH / RenderH;
+ 
++  try
++    ScissorX := round(fPosX*WidthFactor + (ScreenW/Screens)*(fScreen-1));
++    ScissorY := round((RenderH-fPosY-fHeight)*HeightFactor);
++  except
++    Log.LogError(FloatToStr(WidthFactor),'WidthFactor');
++    Log.LogError(FloatToStr(HeightFactor),'HeightFactor');
++    Log.LogError(IntToStr(ScreenW),'ScreenW');
++    Log.LogError(IntToStr(ScreenH),'ScreenH');
++    Log.LogError(IntToStr(Screens),'Screens');
++    Log.LogError(IntToStr(RenderW),'RenderW');
++    Log.LogError(IntToStr(RenderH),'RenderH');
++    Log.LogError(FloatToStr(fPosX),'fPosX');
++    Log.LogError(FloatToStr(fPosY),'fPosX');
++    Log.LogError(IntToStr(fScreen),'fScreen');
++    raise
++  end;
++
+   glScissor(
+-    round(fPosX*WidthFactor + (ScreenW/Screens)*(fScreen-1)),
+-    round((RenderH-fPosY-fHeight)*HeightFactor),
++    ScissorX,
++    ScissorY,
+     round(fWidth*WidthFactor),
+     round(fHeight*HeightFactor)
+     );
