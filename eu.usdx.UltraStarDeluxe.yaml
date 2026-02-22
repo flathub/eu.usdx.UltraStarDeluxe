@@ -176,6 +176,7 @@ modules:
     - patches/ldflags.patch
     - patches/debinfo.patch
     - patches/find-debinfo.patch
+    - patches/debug-1156.patch
   - type: shell
     commands:
 # Workaround for flathub/org.freedesktop.Sdk.Extension.freepascal#10
