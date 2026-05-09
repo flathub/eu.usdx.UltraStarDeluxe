@@ -97,6 +97,9 @@ modules:
   - type: archive
     url: https://github.com/opencv/opencv/archive/4.7.0.tar.gz
     sha256: 8df0079cdbe179748a18d44731af62a245a45ebf5085223dc03133954c662973
+  - type: patch
+    paths:
+    - patches/opencv-cmake-4.patch
 
 - name: projectm
   buildsystem: autotools
@@ -116,6 +119,9 @@ modules:
   - type: patch
     paths:
     - patches/projectM-2.2.1.patch
+  - type: patch
+    paths:
+    - patches/projectM-ax-check-gl.patch
 
 - shared-modules/lua5.4/lua-5.4.json
 

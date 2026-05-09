@@ -1,0 +1,22 @@
+diff --git a/configure.ac b/configure.ac
+index 31c9e37..28f6658 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -8,3 +8,3 @@ AC_PROG_CXX
+ AC_CONFIG_MACRO_DIRS([m4 m4/autoconf-archive])
+-AX_CHECK_GL
++USDX_AX_CHECK_GL
+ AC_CHECK_LIB(c, dlopen, LIBDL="", AC_CHECK_LIB(dl, dlopen, LIBDL="-ldl"))
+diff --git a/m4/autoconf-archive/ax_check_gl.m4 b/m4/autoconf-archive/ax_check_gl.m4
+index 92c8919..0c6f7d2 100644
+--- a/m4/autoconf-archive/ax_check_gl.m4
++++ b/m4/autoconf-archive/ax_check_gl.m4
+@@ -251,7 +251,7 @@ AC_DEFUN_ONCE([_WITH_XQUARTZ_GL],[
+ #   [CFLAGS="$GL_CFLAGS $CFLAGS"
+ #    LIBS="$GL_LIBS $LIBS"]
+ # )
+-AC_DEFUN([AX_CHECK_GL],
++AC_DEFUN([USDX_AX_CHECK_GL],
+ [AC_REQUIRE([AC_CANONICAL_HOST])
+  AC_REQUIRE([PKG_PROG_PKG_CONFIG])
+  AC_ARG_VAR([GL_CFLAGS],[C compiler flags for GL, overriding configure script defaults])
