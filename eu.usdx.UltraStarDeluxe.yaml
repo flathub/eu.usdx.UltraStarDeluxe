@@ -36,11 +36,6 @@ add-extensions:
     subdirectories: true
     no-autodownload: true
 
-  org.freedesktop.Platform.ffmpeg-full:
-    directory: lib/ffmpeg
-    version: '25.08'
-    add-ld-path: .
-
 sdk-extensions:
     - org.freedesktop.Sdk.Extension.freepascal
 
