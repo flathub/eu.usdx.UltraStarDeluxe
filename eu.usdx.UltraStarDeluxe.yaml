@@ -1,7 +1,7 @@
 id: eu.usdx.UltraStarDeluxe
 runtime: org.freedesktop.Platform
 sdk: org.freedesktop.Sdk
-runtime-version: '24.08'
+runtime-version: '25.08'
 separate-locales: false
 rename-desktop-file: ultrastardx.desktop
 rename-icon: ultrastardx
@@ -38,7 +38,7 @@ add-extensions:
 
   org.freedesktop.Platform.ffmpeg-full:
     directory: lib/ffmpeg
-    version: '24.08'
+    version: '25.08'
     add-ld-path: .
 
 sdk-extensions:
