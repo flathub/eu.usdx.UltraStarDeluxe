@@ -154,6 +154,23 @@ modules:
     - patches/51-remove_assert.diff
     - patches/52-pt-time-no-arg.diff
 
+- name: SDL2_image
+  buildsystem: cmake-ninja
+  builddir: true
+  config-opts:
+  - -DSDL2IMAGE_BACKEND_STB=OFF
+  - -DSDL2IMAGE_DEPS_SHARED=OFF
+  - -DSDL2IMAGE_STRICT=ON
+  sources:
+  - type: archive
+    url: https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.10/SDL2_image-2.8.10.tar.gz
+    sha256: ebc059d01c007a62f4b04f10cf858527c875062532296943174df9a80264fd65
+    x-checker-data:
+      type: anitya
+      project-id: 382729
+      stable-only: true
+      url-template: https://github.com/libsdl-org/SDL_image/releases/download/release-$version/SDL2_image-$version.tar.gz
+
 - name: ultrastardx
   buildsystem: autotools
   config-opts:
