@@ -4,7 +4,7 @@ be appended to -gw. GCC has far more switches to enable debugging and
 supports different levels of debug info verbosity.
 
 diff --git a/src/Makefile.in b/src/Makefile.in
-index 1580680e..59a5a463 100644
+index 3aa43b64..cb27f567 100644
 --- a/src/Makefile.in
 +++ b/src/Makefile.in
 @@ -79,6 +79,15 @@ PINC_FLAGS := -Fi$(USDX_LIB_DIR)/JEDI-SDL/SDL/Pas
@@ -23,7 +23,7 @@ index 1580680e..59a5a463 100644
  # Note: 
  #   - PFLAGS/PFLAGS_* defaults to $(PFLAGS_XYZ_DEFAULT) if not set by the user
  #   - if PFLAGS is defined, PFLAGS_* will be ignored on "make all"
-@@ -98,16 +107,16 @@ PFLAGS_EXTRA   += @PFLAGS_EXTRA@
+@@ -98,9 +107,9 @@ PFLAGS_EXTRA   += @PFLAGS_EXTRA@
  # - Note that fpc.cfg already defines -vinw, so add -v0 first
  # - The stack check (-Ct) might not work with enabled threading
  # - Do we need -Coi?
@@ -34,6 +34,8 @@ index 1580680e..59a5a463 100644
 +PFLAGS_RELEASE_DEFAULT := -Xs- -O2
  PFLAGS_EXTRA_DEFAULT   :=
  
+ # Build Windows release binaries as GUI applications so Windows does not
+@@ -114,8 +123,8 @@ PFLAGS_WINDOWS_GUI := $(PFLAGS_WINDOWS_GUI_DEFAULT)
  # Debug/Release mode flags
  # Note that flags will overwrite previously specified flags,
  # e.g. "-vinwe -vi-" is the same as "-vnwe"
@@ -44,7 +46,7 @@ index 1580680e..59a5a463 100644
  
  # Choose default PFLAGS, depending on debug mode.
  # Only used if PFLAGS was not set by the user.
-@@ -117,6 +126,15 @@ else
+@@ -126,6 +135,15 @@ else
  PFLAGS_DEFAULT := $(PFLAGS_RELEASE_ALL)
  endif
  

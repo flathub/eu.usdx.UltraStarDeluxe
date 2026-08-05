@@ -104,23 +104,26 @@ modules:
     sha256: 8df0079cdbe179748a18d44731af62a245a45ebf5085223dc03133954c662973
 
 - name: projectm
-  buildsystem: autotools
-  rm-configure: true
-  config-opts:
-  - --disable-static
-  post-install:
-  - "f=$(fc-match -f '%{file}' sans) ; sed -i \"/Title Font/s:=.*:= $f:\" ${FLATPAK_DEST}/share/projectM/config.inp"
-  - "f=$(fc-match -f '%{file}' monospace) ; sed -i \"/Menu Font/s:=.*:= $f:\" ${FLATPAK_DEST}/share/projectM/config.inp"
+  buildsystem: cmake-ninja
+  build-options:
+    arch:
+      x86_64:
+        config-opts:
+          - -DCMAKE_BUILD_TYPE=Release
+          - -DENABLE_PLAYLIST=OFF
+          - -DENABLE_GLES=OFF
+      aarch64:
+        config-opts:
+          - -DCMAKE_BUILD_TYPE=Release
+          - -DENABLE_PLAYLIST=OFF
+          - -DENABLE_GLES=ON
   cleanup:
-  - /share/projectM/fonts
-  - /bin
+  - /include/projectM-4
+  - /lib/cmake/projectM4
   sources:
   - type: archive
-    url: https://github.com/projectM-visualizer/projectm/releases/download/v2.2.1/projectM-2.2.1.tar.gz
-    sha256: 9bbb33c5ba048537e97ea5ba2bd9fef76972c881597599a272b0194ec1d5f2a3
-  - type: patch
-    paths:
-    - patches/projectM-2.2.1.patch
+    url: https://github.com/projectM-visualizer/projectm/releases/download/v4.1.6/libprojectM-4.1.6.tar.gz
+    sha256: 1b9e6d56c59fe24e5416da4d42e941a34c982811003e43ac88b5aca8afa52c87
 
 - shared-modules/lua5.4/lua-5.4.json
 
@@ -166,8 +169,7 @@ modules:
   sources:
   - type: git
     url: https://github.com/UltraStar-Deluxe/USDX.git
-    tag: v2026.6.0
-    commit: ec47fc284540779a651716fa72b51a6a6fccb3b0
+    commit: 2e870ecae2c5f6380c0025ef8b3750784df36120
     disable-submodules: true
   - type: patch
     paths:

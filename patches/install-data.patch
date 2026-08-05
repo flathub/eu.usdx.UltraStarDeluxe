@@ -1,10 +1,10 @@
 Install icons, destop file, and AppStream data
 
 diff --git a/Makefile.in b/Makefile.in
-index 7dfbee1..5dd21e5 100644
+index ada578c0..d31b6228 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -241,6 +241,12 @@ install-plugins:
+@@ -262,6 +262,12 @@ install-plugins:
  
  .PHONY: install-data
  install-data:
