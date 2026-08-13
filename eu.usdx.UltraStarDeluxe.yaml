@@ -1,7 +1,7 @@
 id: eu.usdx.UltraStarDeluxe
 runtime: org.freedesktop.Platform
 sdk: org.freedesktop.Sdk
-runtime-version: '24.08'
+runtime-version: '25.08'
 separate-locales: false
 rename-desktop-file: ultrastardx.desktop
 rename-icon: ultrastardx
@@ -35,11 +35,6 @@ add-extensions:
     merge-dirs: share/ultrastardx/themes
     subdirectories: true
     no-autodownload: true
-
-  org.freedesktop.Platform.ffmpeg-full:
-    directory: lib/ffmpeg
-    version: '24.08'
-    add-ld-path: .
 
 sdk-extensions:
     - org.freedesktop.Sdk.Extension.freepascal
@@ -100,8 +95,8 @@ modules:
   - /share/opencv4/valgrind*.supp
   sources:
   - type: archive
-    url: https://github.com/opencv/opencv/archive/4.7.0.tar.gz
-    sha256: 8df0079cdbe179748a18d44731af62a245a45ebf5085223dc03133954c662973
+    url: https://github.com/opencv/opencv/archive/refs/tags/4.12.0.tar.gz
+    sha256: 44c106d5bb47efec04e531fd93008b3fcd1d27138985c5baf4eafac0e1ec9e9d
 
 - name: projectm
   buildsystem: cmake-ninja
@@ -131,6 +126,8 @@ modules:
   buildsystem: cmake-ninja
   config-opts:
   - -DCMAKE_BUILD_TYPE=Release
+  - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+  - -DCMAKE_C_STANDARD=11
   cleanup:
   - "*.a"
   - "libporttime.*"
@@ -156,6 +153,23 @@ modules:
     - patches/41-pm_linux.diff
     - patches/50-change_assert.diff
     - patches/51-remove_assert.diff
+
+- name: SDL2_image
+  buildsystem: cmake-ninja
+  builddir: true
+  config-opts:
+  - -DSDL2IMAGE_BACKEND_STB=OFF
+  - -DSDL2IMAGE_DEPS_SHARED=OFF
+  - -DSDL2IMAGE_STRICT=ON
+  sources:
+  - type: archive
+    url: https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.10/SDL2_image-2.8.10.tar.gz
+    sha256: ebc059d01c007a62f4b04f10cf858527c875062532296943174df9a80264fd65
+    x-checker-data:
+      type: anitya
+      project-id: 382729
+      stable-only: true
+      url-template: https://github.com/libsdl-org/SDL_image/releases/download/release-$version/SDL2_image-$version.tar.gz
 
 - name: ultrastardx
   buildsystem: autotools
