@@ -8,21 +8,21 @@ rename-icon: ultrastardx
 command: ultrastardx
 
 finish-args:
-- --socket=wayland
-- --socket=fallback-x11
-- --share=ipc
-- --socket=pulseaudio
-- --device=all
-- --filesystem=~/.java/.userPrefs/PortMidi:ro
-- --persist=.ultrastardx
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  - --socket=pulseaudio
+  - --device=all
+  - --filesystem=~/.java/.userPrefs/PortMidi:ro
+  - --persist=.ultrastardx
 
 cleanup:
-- /include
-- /lib/cmake
-- /lib/pkgconfig
-- "/lib/*.so"
-- "/lib/*.la"
-- setup_vars_opencv4.sh
+  - /include
+  - /lib/cmake
+  - /lib/pkgconfig
+  - /lib/*.so
+  - /lib/*.la
+  - setup_vars_opencv4.sh
 
 add-extensions:
   eu.usdx.UltraStarDeluxe.Songs:
@@ -37,187 +37,192 @@ add-extensions:
     no-autodownload: true
 
 sdk-extensions:
-    - org.freedesktop.Sdk.Extension.freepascal
+  - org.freedesktop.Sdk.Extension.freepascal
 
 build-options:
   append-path: /usr/lib/sdk/freepascal/bin
   env:
-   - FPCDIR=/usr/lib/sdk/freepascal/fpcsrc
+    - FPCDIR=/usr/lib/sdk/freepascal/fpcsrc
   no-debuginfo-compression: true
   cflags: -gdwarf-3
   cxxflags: -gdwarf-3
 
 modules:
-- name: opencv
-  buildsystem: cmake-ninja
-  builddir: true
-  config-opts:
-  - -DCMAKE_BUILD_TYPE=Release
-  - -DOPENCV_GENERATE_PKGCONFIG=ON
-  - -DBUILD_TESTS=OFF
-  - -DBUILD_opencv_apps=OFF
-  - -DBUILD_opencv_calib3d=OFF
-  - -DBUILD_opencv_dnn=OFF
-  - -DBUILD_opencv_features2d=OFF
-  - -DBUILD_opencv_flann=OFF
-  - -DBUILD_opencv_gapi=OFF
-  - -DBUILD_opencv_highgui=OFF
-  - -DBUILD_opencv_java_bindings_generator=OFF
-  - -DBUILD_opencv_ml=OFF
-  - -DBUILD_opencv_objdetect=OFF
-  - -DBUILD_opencv_photo=OFF
-  - -DBUILD_opencv_python2=OFF
-  - -DBUILD_opencv_python_bindings_generator=OFF
-  - -DBUILD_opencv_python_tests=OFF
-  - -DBUILD_opencv_stitching=OFF
-  - -DBUILD_opencv_ts=OFF
-  - -DBUILD_opencv_video=OFF
-  - -DCV_TRACE=OFF
-  - -DWITH_PROTOBUF=OFF
-  - -DWITH_FFMPEG=OFF
-  - -DWITH_ADE=OFF
-  - -DWITH_QUIRC=OFF
-  - -DWITH_GTK=OFF
-  - -DWITH_TIFF=OFF
-  - -DWITH_WEBP=OFF
-  - -DWITH_JASPER=OFF
-  - -DWITH_OPENJPEG=OFF
-  - -DWITH_PNG=OFF
-  - -DWITH_OPENEXR=OFF
-  - -DWITH_GDAL=OFF
-  - -DWITH_GDCM=OFF
-  - -DWITH_IMGCODEC_HDR=OFF
-  - -DWITH_IMGCODEC_SUNRASTER=OFF
-  - -DWITH_IMGCODEC_PXM=OFF
-  - -DWITH_IMGCODEC_PFM=OFF
-  cleanup:
-  - /share/opencv4/*cascades
-  - /share/opencv4/valgrind*.supp
-  sources:
-  - type: archive
-    url: https://github.com/opencv/opencv/archive/refs/tags/4.12.0.tar.gz
-    sha256: 44c106d5bb47efec04e531fd93008b3fcd1d27138985c5baf4eafac0e1ec9e9d
+  - name: opencv
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DOPENCV_GENERATE_PKGCONFIG=ON
+      - -DBUILD_TESTS=OFF
+      - -DBUILD_opencv_apps=OFF
+      - -DBUILD_opencv_calib3d=OFF
+      - -DBUILD_opencv_dnn=OFF
+      - -DBUILD_opencv_features2d=OFF
+      - -DBUILD_opencv_flann=OFF
+      - -DBUILD_opencv_gapi=OFF
+      - -DBUILD_opencv_highgui=OFF
+      - -DBUILD_opencv_java_bindings_generator=OFF
+      - -DBUILD_opencv_ml=OFF
+      - -DBUILD_opencv_objdetect=OFF
+      - -DBUILD_opencv_photo=OFF
+      - -DBUILD_opencv_python2=OFF
+      - -DBUILD_opencv_python_bindings_generator=OFF
+      - -DBUILD_opencv_python_tests=OFF
+      - -DBUILD_opencv_stitching=OFF
+      - -DBUILD_opencv_ts=OFF
+      - -DBUILD_opencv_video=OFF
+      - -DCV_TRACE=OFF
+      - -DWITH_PROTOBUF=OFF
+      - -DWITH_FFMPEG=OFF
+      - -DWITH_ADE=OFF
+      - -DWITH_QUIRC=OFF
+      - -DWITH_GTK=OFF
+      - -DWITH_TIFF=OFF
+      - -DWITH_WEBP=OFF
+      - -DWITH_JASPER=OFF
+      - -DWITH_OPENJPEG=OFF
+      - -DWITH_PNG=OFF
+      - -DWITH_OPENEXR=OFF
+      - -DWITH_GDAL=OFF
+      - -DWITH_GDCM=OFF
+      - -DWITH_IMGCODEC_HDR=OFF
+      - -DWITH_IMGCODEC_SUNRASTER=OFF
+      - -DWITH_IMGCODEC_PXM=OFF
+      - -DWITH_IMGCODEC_PFM=OFF
+    cleanup:
+      - /share/opencv4/*cascades
+      - /share/opencv4/valgrind*.supp
+    sources:
+      - type: archive
+        url: https://github.com/opencv/opencv/archive/refs/tags/4.12.0.tar.gz
+        sha256: 44c106d5bb47efec04e531fd93008b3fcd1d27138985c5baf4eafac0e1ec9e9d
 
-- name: projectm
-  buildsystem: cmake-ninja
-  build-options:
-    arch:
-      x86_64:
-        config-opts:
-          - -DCMAKE_BUILD_TYPE=Release
-          - -DENABLE_PLAYLIST=OFF
-          - -DENABLE_GLES=OFF
-      aarch64:
-        config-opts:
-          - -DCMAKE_BUILD_TYPE=Release
-          - -DENABLE_PLAYLIST=OFF
-          - -DENABLE_GLES=ON
-  cleanup:
-  - /include/projectM-4
-  - /lib/cmake/projectM4
-  sources:
-  - type: archive
-    url: https://github.com/projectM-visualizer/projectm/releases/download/v4.1.6/libprojectM-4.1.6.tar.gz
-    sha256: 1b9e6d56c59fe24e5416da4d42e941a34c982811003e43ac88b5aca8afa52c87
+  - name: projectm
+    buildsystem: cmake-ninja
+    build-options:
+      arch:
+        x86_64:
+          config-opts:
+            - -DCMAKE_BUILD_TYPE=Release
+            - -DENABLE_PLAYLIST=OFF
+            - -DENABLE_GLES=OFF
+        aarch64:
+          config-opts:
+            - -DCMAKE_BUILD_TYPE=Release
+            - -DENABLE_PLAYLIST=OFF
+            - -DENABLE_GLES=ON
+    cleanup:
+      - /include/projectM-4
+      - /lib/cmake/projectM4
+    sources:
+      - type: archive
+        url: https://github.com/projectM-visualizer/projectm/releases/download/v4.1.6/libprojectM-4.1.6.tar.gz
+        sha256: 1b9e6d56c59fe24e5416da4d42e941a34c982811003e43ac88b5aca8afa52c87
 
-- shared-modules/lua5.4/lua-5.4.json
+  - shared-modules/lua5.4/lua-5.4.json
 
-- name: portmidi
-  buildsystem: cmake-ninja
-  config-opts:
-  - -DCMAKE_BUILD_TYPE=Release
-  - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
-  - -DCMAKE_C_STANDARD=11
-  cleanup:
-  - "*.a"
-  - "libporttime.*"
-  sources:
-  - type: archive
-    url: https://sourceforge.net/projects/portmedia/files/portmidi/217/portmidi-src-217.zip
-    sha256: 08e9a892bd80bdb1115213fb72dc29a7bf2ff108b378180586aa65f3cfd42e0f
-  - type: shell
-    commands:
-    - find -type f | while read a ; do tr -d '\r' < "$a" > /tmp/t && cat /tmp/t > "$a" ; done
-  - type: patch
-    paths:
+  - name: portmidi
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+      - -DCMAKE_C_STANDARD=11
+    cleanup:
+      - '*.a'
+      - libporttime.*
+    sources:
+      - type: archive
+        url: https://sourceforge.net/projects/portmedia/files/portmidi/217/portmidi-src-217.zip
+        sha256: 08e9a892bd80bdb1115213fb72dc29a7bf2ff108b378180586aa65f3cfd42e0f
+      - type: shell
+        commands:
+          - find -type f | while read a ; do tr -d '\r' < "$a" > /tmp/t && cat /tmp/t
+            > "$a" ; done
+      - type: patch
+        paths:
 # Patches taken from Debian portmidi 217-6.1
-    - patches/00_cmake.diff
-    - patches/02_pmlinuxalsa.diff
-    - patches/03_pm_test_Makefile.diff
-    - patches/11-pmlinuxalsa.patch
-    - patches/13-disablejni.patch
-    - patches/20-movetest.diff
-    - patches/21-hardentests.diff
-    - patches/30-porttime_cmake.diff
-    - patches/40-test_sysex.diff
-    - patches/41-pm_linux.diff
-    - patches/50-change_assert.diff
-    - patches/51-remove_assert.diff
+          - patches/00_cmake.diff
+          - patches/02_pmlinuxalsa.diff
+          - patches/03_pm_test_Makefile.diff
+          - patches/11-pmlinuxalsa.patch
+          - patches/13-disablejni.patch
+          - patches/20-movetest.diff
+          - patches/21-hardentests.diff
+          - patches/30-porttime_cmake.diff
+          - patches/40-test_sysex.diff
+          - patches/41-pm_linux.diff
+          - patches/50-change_assert.diff
+          - patches/51-remove_assert.diff
 
-- name: SDL2_image
-  buildsystem: cmake-ninja
-  builddir: true
-  config-opts:
-  - -DSDL2IMAGE_BACKEND_STB=OFF
-  - -DSDL2IMAGE_DEPS_SHARED=OFF
-  - -DSDL2IMAGE_STRICT=ON
-  sources:
-  - type: archive
-    url: https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.10/SDL2_image-2.8.10.tar.gz
-    sha256: ebc059d01c007a62f4b04f10cf858527c875062532296943174df9a80264fd65
-    x-checker-data:
-      type: anitya
-      project-id: 382729
-      stable-only: true
-      url-template: https://github.com/libsdl-org/SDL_image/releases/download/release-$version/SDL2_image-$version.tar.gz
+  - name: SDL2_image
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DSDL2IMAGE_BACKEND_STB=OFF
+      - -DSDL2IMAGE_DEPS_SHARED=OFF
+      - -DSDL2IMAGE_STRICT=ON
+    sources:
+      - type: archive
+        url: https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.12/SDL2_image-2.8.12.tar.gz
+        sha256: 393f5efb50536ec13ca4f4affb69cc9966d3c3f969e6c5e701faddf9f9785381
+        x-checker-data:
+          type: anitya
+          project-id: 382729
+          stable-only: true
+          url-template: https://github.com/libsdl-org/SDL_image/releases/download/release-$version/SDL2_image-$version.tar.gz
 
-- name: ultrastardx
-  buildsystem: autotools
-  config-opts:
-  - --with-libprojectM
-  - --with-opencv-cxx-api
-  post-install:
-  - "cd ${FLATPAK_DEST}/share/ultrastardx/fonts ; fc-scan -f '%{file} :fullname=%{fullname}\n' . | while read a b ; do a=${a#./} c=$(fc-list -f '%{file}\n' \"$b\" | head -n 1) ; if [ -n \"$c\" ] ; then sed -i \"s:=$a:=$c:\" fonts.ini ; rm \"$a\" ; fi ; done"
-  - "for i in ${FLATPAK_DEST}/share/ultrastardx/fonts/*/ ; do [ -n \"$(fc-scan -f '%{file}' \"$i\" | head -n 1)\" ] || rm -Rf \"$i\" ; done"
-  - mkdir ${FLATPAK_DEST}/lib/ffmpeg
-  sources:
-  - type: git
-    url: https://github.com/UltraStar-Deluxe/USDX.git
-    tag: v2026.8.0
-    commit: f3a0b3609499616f3631586691f0afc2d6b98d09
-    disable-submodules: true
-  - type: patch
-    paths:
-    - patches/install-data.patch
-    - patches/instructions.patch
-    - patches/ldflags.patch
-    - patches/debinfo.patch
-    - patches/find-debinfo.patch
-  - type: shell
-    commands:
+  - name: ultrastardx
+    buildsystem: autotools
+    config-opts:
+      - --with-libprojectM
+      - --with-opencv-cxx-api
+    post-install:
+      - "cd ${FLATPAK_DEST}/share/ultrastardx/fonts ; fc-scan -f '%{file} :fullname=%{fullname}\n\
+        ' . | while read a b ; do a=${a#./} c=$(fc-list -f '%{file}\n' \"$b\" | head\
+        \ -n 1) ; if [ -n \"$c\" ] ; then sed -i \"s:=$a:=$c:\" fonts.ini ; rm \"\
+        $a\" ; fi ; done"
+      - for i in ${FLATPAK_DEST}/share/ultrastardx/fonts/*/ ; do [ -n "$(fc-scan -f
+        '%{file}' "$i" | head -n 1)" ] || rm -Rf "$i" ; done
+      - mkdir ${FLATPAK_DEST}/lib/ffmpeg
+    sources:
+      - type: git
+        url: https://github.com/UltraStar-Deluxe/USDX.git
+        tag: v2026.8.0
+        commit: f3a0b3609499616f3631586691f0afc2d6b98d09
+        disable-submodules: true
+      - type: patch
+        paths:
+          - patches/install-data.patch
+          - patches/instructions.patch
+          - patches/ldflags.patch
+          - patches/debinfo.patch
+          - patches/find-debinfo.patch
+      - type: shell
+        commands:
 # Workaround for flathub/org.freedesktop.Sdk.Extension.freepascal#10
-    - cp /usr/lib/sdk/freepascal/etc/fpc.cfg fpc.cfg
-    - ln -s ../fpc.cfg src/
-    - "set -- `gcc -print-file-name=crtbegin.o` ; echo -Fl${1%/*} >> fpc.cfg"
+          - cp /usr/lib/sdk/freepascal/etc/fpc.cfg fpc.cfg
+          - ln -s ../fpc.cfg src/
+          - set -- `gcc -print-file-name=crtbegin.o` ; echo -Fl${1%/*} >> fpc.cfg
 
-- name: link-debug-data
-  buildsystem: simple
-  build-commands:
-  - mkdir -p ${FLATPAK_DEST}/lib/debug/for-freepascal
-  - ln -s ${FLATPAK_DEST}/bin/ultrastardx ${FLATPAK_DEST}/lib/debug/for-freepascal/
-  - |
-    (
-        echo ${FLATPAK_DEST}/bin/ultrastardx
-        ldd ${FLATPAK_DEST}/bin/ultrastardx | sed -n 's/.* => //;s/ ([^)]*)$//;s:^[[:space:]]*/:/:p'
-    ) | while read a ; do
-        objcopy --dump-section .gnu_debuglink=/tmp/debuglink "$a" /dev/null
-        if [ -e /tmp/debuglink ] ; then
-            l=`hexdump -e '1/2000 "%s"' /tmp/debuglink`
-            rm -f /tmp/debuglink
-            a=${a%/*}
-            case "$a" in
-            ${FLATPAK_DEST}/*)
-                ln -s ..${a#${FLATPAK_DEST}}/$l ${FLATPAK_DEST}/lib/debug/for-freepascal/
-            esac
-        fi
-    done
+  - name: link-debug-data
+    buildsystem: simple
+    build-commands:
+      - mkdir -p ${FLATPAK_DEST}/lib/debug/for-freepascal
+      - ln -s ${FLATPAK_DEST}/bin/ultrastardx ${FLATPAK_DEST}/lib/debug/for-freepascal/
+      - |
+        (
+            echo ${FLATPAK_DEST}/bin/ultrastardx
+            ldd ${FLATPAK_DEST}/bin/ultrastardx | sed -n 's/.* => //;s/ ([^)]*)$//;s:^[[:space:]]*/:/:p'
+        ) | while read a ; do
+            objcopy --dump-section .gnu_debuglink=/tmp/debuglink "$a" /dev/null
+            if [ -e /tmp/debuglink ] ; then
+                l=`hexdump -e '1/2000 "%s"' /tmp/debuglink`
+                rm -f /tmp/debuglink
+                a=${a%/*}
+                case "$a" in
+                ${FLATPAK_DEST}/*)
+                    ln -s ..${a#${FLATPAK_DEST}}/$l ${FLATPAK_DEST}/lib/debug/for-freepascal/
+                esac
+            fi
+        done
